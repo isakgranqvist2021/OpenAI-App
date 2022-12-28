@@ -11,8 +11,8 @@
         {
             @foreach (var item in Model.searchHistory)
             {
-                <div class="p-5 border-b last:border-b-0">
-                    <span class="text-slate-500 timestamp">@item.created</span>
+                <div class="px-5 py-2 border-b last:border-b-0">
+                    <span class="text-slate-500 text-sm timestamp">@item.created</span>
 
                     @foreach (var choice in item.choices)
                     {
@@ -27,7 +27,6 @@
                 <p class="text-slate-400">History will show here</p>
             </div>
         }
-
     </aside>
 
     <main role="main" class="grow h-full overflow-hidden flex flex-col">
