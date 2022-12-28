@@ -1,22 +1,26 @@
+using System.Text.RegularExpressions;
+
 namespace RecGen.Config;
 
 public class Environment
 {
     public string? OpenApiSecret { get; set; } = null;
 
+    private static Regex matcher = new Regex(
+        @"([0-9A-Za-z_]*)(={1})([0-9A-Za-z_=?\-\:\/].*)"
+    );
+
     public static void Load()
     {
+        var output = System.IO.File.ReadAllText(".env").Trim();
+        var matches = matcher.Matches(output);
 
-        string output = System.IO.File.ReadAllText(".env").Trim();
-        string[] parts = output.Split("\n");
-
-        for (int i = 0; i < parts.Length; i++)
+        foreach (Match match in matches)
         {
-            string[] keyValue = parts[i].Split("=");
-
+            GroupCollection groups = match.Groups;
             System.Environment.SetEnvironmentVariable(
-                keyValue[0].Trim(),
-                keyValue[1].Trim()
+                groups[1].Value,
+                groups[3].Value
             );
         }
     }

@@ -7,9 +7,7 @@ namespace RecGen.Services;
 public class SearchService
 {
     private static HttpClient? _client;
-
     private const string baseUrl = "https://api.openai.com/v1/completions";
-
     public SearchService()
     {
         _client = new HttpClient();
@@ -57,6 +55,8 @@ public class SearchService
                 throw new Exception("Could not deserialize search response");
             }
 
+            searchResponse.created = DateTimeOffset.Now.ToUnixTimeSeconds();
+            await Persistance.Insert(searchResponse);
             return searchResponse;
         }
         catch (HttpRequestException e)

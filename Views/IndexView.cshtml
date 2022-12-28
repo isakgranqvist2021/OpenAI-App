@@ -7,14 +7,32 @@
 
 <section class="bg-slate-50 h-screen w-screen flex overflow-hidden">
     <aside class="w-1/4 border-r overflow-auto">
-        <div class="p-5 border-b last:border-b-0">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, dolorem?</p>
-        </div>
+        @if (Model?.searchHistory is not null)
+        {
+            @foreach (var item in Model.searchHistory)
+            {
+                <div class="p-5 border-b last:border-b-0">
+                    <span class="text-slate-500 timestamp">@item.created</span>
+
+                    @foreach (var choice in item.choices)
+                    {
+                        <p class="text-xs">@choice.text</p>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="h-full w-full flex justify-center items-center">
+                <p class="text-slate-400">History will show here</p>
+            </div>
+        }
+
     </aside>
 
     <main role="main" class="grow h-full overflow-hidden flex flex-col">
         <div class="border-b p-5 flex flex-col gap-5">
-            <form method="POST" action="/search" class="flex gap-4">
+            <form method="POST" action="/" class="flex gap-4">
                 <input name="searchString" placeholder="Italian food" tabIndex="0" type="text"
                     class="border-2 border-transparent duration-100 ease-in focus:border-indigo-400 outline-0 p-2 rounded-md transition-outline w-full" />
 
@@ -26,9 +44,9 @@
         </div>
 
         <div class="flex flex-col overflow-auto grow">
-            @if (Model?.choices is not null)
+            @if (Model?.searchResponse?.choices is not null)
             {
-                @foreach (var item in Model.choices)
+                @foreach (var item in Model.searchResponse.choices)
                 {
                     <div class="p-5 border-b last:border-b-0">
                         <p class="max-w-prose">@item.text</p>
