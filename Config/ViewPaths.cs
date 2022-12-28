@@ -1,4 +1,4 @@
-namespace RecGen.Config;
+namespace OpenAIApp.Config;
 
 public class ViewPaths
 {

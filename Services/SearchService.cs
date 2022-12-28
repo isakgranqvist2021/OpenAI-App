@@ -1,8 +1,8 @@
-using RecGen.Models;
+using OpenAIApp.Models;
 using System.Text;
 using System.Text.Json;
 
-namespace RecGen.Services;
+namespace OpenAIApp.Services;
 
 public class SearchService
 {
@@ -55,7 +55,6 @@ public class SearchService
                 throw new Exception("Could not deserialize search response");
             }
 
-            searchResponse.created = DateTimeOffset.Now.ToUnixTimeSeconds();
             await Persistance.Insert(searchResponse);
             return searchResponse;
         }

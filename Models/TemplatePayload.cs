@@ -1,4 +1,4 @@
-namespace RecGen.Models;
+namespace OpenAIApp.Models;
 
 public class TemplatePayload
 {

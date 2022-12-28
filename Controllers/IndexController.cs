@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using RecGen.Config;
-using RecGen.Models;
-using RecGen.Services;
-namespace RecGen.Controllers;
+using OpenAIApp.Config;
+using OpenAIApp.Models;
+using OpenAIApp.Services;
+namespace OpenAIApp.Controllers;
 
 [Route("/")]
 public class IndexController : Controller

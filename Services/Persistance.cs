@@ -1,8 +1,8 @@
 using MongoDB.Driver;
-using RecGen.Models;
+using OpenAIApp.Models;
 using MongoDB.Bson;
 
-namespace RecGen.Services;
+namespace OpenAIApp.Services;
 
 public class Persistance
 {
@@ -15,7 +15,7 @@ public class Persistance
                 System.Environment.GetEnvironmentVariable("MONGODB_URI")
             );
 
-            var database = client.GetDatabase("recgen");
+            var database = client.GetDatabase("OpenAIApp");
             return database.GetCollection<SearchResponse>("history");
         }
         catch (Exception e)

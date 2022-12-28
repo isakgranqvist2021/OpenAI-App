@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace RecGen.Config;
+namespace OpenAIApp.Config;
 
 public class Environment
 {

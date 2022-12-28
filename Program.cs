@@ -1,5 +1,5 @@
 
-namespace RecGen;
+namespace OpenAIApp;
 
 public class Program
 {
