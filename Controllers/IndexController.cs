@@ -12,7 +12,7 @@ public class IndexController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var history = Sorter.sortSearchResponses(await Persistance.Read());
+        var history = Sorter.sortSearchResponses(await HistoryService.Read());
 
         return View(ViewPaths.IndexView, new TemplatePayload
         {
@@ -25,7 +25,7 @@ public class IndexController : Controller
     public async Task<ActionResult> Post([FromForm] SearchModel data)
     {
         var searchResponse = await _searchService.Search(data.SearchString);
-        var history = Sorter.sortSearchResponses(await Persistance.Read());
+        var history = Sorter.sortSearchResponses(await HistoryService.Read());
 
         return View(ViewPaths.IndexView, new TemplatePayload
         {

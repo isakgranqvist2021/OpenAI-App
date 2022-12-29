@@ -5,7 +5,7 @@ using OpenAIApp.Services.Database;
 
 namespace OpenAIApp.Services;
 
-public class Persistance
+public class HistoryService
 {
     public static async Task<List<SearchResponse>?> Read()
     {

@@ -5,12 +5,18 @@
     Layout = "~/Views/Layout.cshtml";
 }
 
-<section class="bg-slate-50 h-screen w-screen flex overflow-hidden">
-    <aside class="w-1/4 border-r overflow-auto">
-        <partial name="~/Views/Partials/Aside.cshtml" />
-    </aside>
+<section class="flex flex-col border-b h-screen w-screen">
+    <nav class="px-5 py-3 bg-slate-800">
+        <partial name="~/Views/Partials/Nav.cshtml" />
+    </nav>
 
-    <main role="main" class="grow h-full overflow-hidden flex flex-col">
-        <partial name="~/Views/Partials/Main.cshtml" />
-    </main>
+    <section class="bg-slate-50 flex overflow-hidden grow">
+        <aside class="w-1/4 border-r overflow-auto">
+            <partial name="~/Views/Partials/Aside.cshtml" />
+        </aside>
+
+        <main role="main" class="grow h-full overflow-hidden flex flex-col">
+            <partial name="~/Views/Partials/Main.cshtml" />
+        </main>
+    </section>
 </section>

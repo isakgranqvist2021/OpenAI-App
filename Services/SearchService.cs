@@ -55,7 +55,7 @@ public class SearchService
                 throw new Exception("Could not deserialize search response");
             }
 
-            await Persistance.Insert(searchResponse);
+            await HistoryService.Insert(searchResponse);
             return searchResponse;
         }
         catch (HttpRequestException e)
