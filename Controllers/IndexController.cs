@@ -10,7 +10,7 @@ public class IndexController : Controller
     private readonly SearchService _searchService = new SearchService();
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Get()
     {
         var history = Sorter.sortSearchResponses(await Persistance.Read());
 

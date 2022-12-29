@@ -1,0 +1,22 @@
+<div>
+    @if (Model?.searchHistory is not null)
+    {
+        @foreach (var item in Model.searchHistory)
+        {
+            <div class="px-5 py-2 border-b last:border-b-0">
+                <span class="text-slate-500 text-sm timestamp">@item.created</span>
+
+                @foreach (var choice in item.choices)
+                {
+                    <p class="text-xs">@choice.text</p>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="h-full w-full flex justify-center items-center">
+            <p class="text-slate-400">History will show here</p>
+        </div>
+    }
+</div>
