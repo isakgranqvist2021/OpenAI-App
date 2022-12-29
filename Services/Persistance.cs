@@ -1,35 +1,19 @@
 using MongoDB.Driver;
 using OpenAIApp.Models;
 using MongoDB.Bson;
+using OpenAIApp.Services.Database;
 
 namespace OpenAIApp.Services;
 
 public class Persistance
 {
-
-    private static IMongoCollection<SearchResponse>? getCollection()
-    {
-        try
-        {
-            var client = new MongoClient(
-                System.Environment.GetEnvironmentVariable("MONGODB_URI")
-            );
-
-            var database = client.GetDatabase("OpenAIApp");
-            return database.GetCollection<SearchResponse>("history");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
-    }
-
     public static async Task<List<SearchResponse>?> Read()
     {
         try
         {
-            var collection = getCollection();
+            var collection = Collections.GetCollection<SearchResponse>(
+                Config.Collections.HistoryCollectionName
+            );
 
             if (collection is null)
             {
@@ -50,7 +34,9 @@ public class Persistance
     {
         try
         {
-            var collection = getCollection();
+            var collection = Collections.GetCollection<SearchResponse>(
+                Config.Collections.HistoryCollectionName
+            );
 
             if (collection is null)
             {
