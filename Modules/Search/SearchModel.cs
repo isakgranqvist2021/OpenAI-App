@@ -1,11 +1,11 @@
-namespace OpenAIApp.Models;
+namespace OpenAIApp.Modules.Search;
 
 public class SearchModel
 {
     public string SearchString { get; set; } = "";
 }
 
-public class SearchPayload
+public class SearchPayloadModel
 {
     public string model { get; set; } = "";
     public string prompt { get; set; } = "";
@@ -13,7 +13,7 @@ public class SearchPayload
     public int max_tokens { get; set; } = 7;
 }
 
-public class SearchResponseChoice
+public class SearchResponseChoiceModel
 {
     public string text { get; set; } = "";
     public int index { get; set; } = 0;
@@ -21,7 +21,7 @@ public class SearchResponseChoice
     public string finish_reason { get; set; } = "length";
 }
 
-public class Usage
+public class UsageModel
 {
     public int prompt_tokens { get; set; } = 0;
     public int completion_tokens { get; set; } = 0;
@@ -29,12 +29,12 @@ public class Usage
 }
 
 
-public class SearchResponse
+public class SearchResponseModel
 {
     public string id { get; set; } = "";
     public string obj { get; set; } = "";
     public long created { get; set; } = 0;
     public string model { get; } = "text-davinci:003";
-    public List<SearchResponseChoice> choices { get; set; } = new List<SearchResponseChoice>();
-    public Usage? usage { get; set; } = null;
+    public List<SearchResponseChoiceModel> choices { get; set; } = new List<SearchResponseChoiceModel>();
+    public UsageModel? usage { get; set; } = null;
 }

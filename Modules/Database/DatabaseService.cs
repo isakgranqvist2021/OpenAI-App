@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace OpenAIApp.Services.Database;
+namespace OpenAIApp.Modules.Database;
 
 public class Collections
 {

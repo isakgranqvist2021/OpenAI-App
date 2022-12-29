@@ -10,7 +10,20 @@
         <partial name="~/Views/Partials/Nav.cshtml" />
     </nav>
 
-    <section class="bg-slate-50 overflow-hidden grow p-5">
-        <h1>Sign In</h1>
+    <section class="bg-slate-50 overflow-hidden grow p-5 flex flex-col gap-2">
+        <h1 class="text-xl">Sign In</h1>
+
+        <form action="/sign-in" method="POST" class="flex items-start flex-col gap-2">
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="border">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="border">
+            </div>
+
+            <button class="border bg-slate-800 text-white px-2 py-1 rounded-md">Sign In</button>
+        </form>
     </section>
 </section>

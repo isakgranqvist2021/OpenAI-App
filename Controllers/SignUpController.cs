@@ -10,4 +10,10 @@ public class SignUpController : Controller
     {
         return View(ViewPaths.SignUpView);
     }
+
+    [HttpPost]
+    public IActionResult Post()
+    {
+        return View(ViewPaths.SignUpView);
+    }
 }

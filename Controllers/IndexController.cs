@@ -1,8 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenAIApp.Config;
-using OpenAIApp.Models;
-using OpenAIApp.Services;
+using OpenAIApp.Modules.Search;
+
 namespace OpenAIApp.Controllers;
+
+public class IndexTemplatePayload
+{
+    public List<SearchResponseModel>? searchHistory { get; set; } = null;
+    public SearchResponseModel? searchResponse { get; set; } = null;
+}
 
 [Route("/")]
 public class IndexController : Controller
@@ -12,9 +18,9 @@ public class IndexController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var history = Sorter.sortSearchResponses(await HistoryService.Read());
+        var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
 
-        return View(ViewPaths.IndexView, new TemplatePayload
+        return View(ViewPaths.IndexView, new IndexTemplatePayload
         {
             searchHistory = history,
             searchResponse = null
@@ -24,13 +30,13 @@ public class IndexController : Controller
     [HttpPost]
     public async Task<ActionResult> Post([FromForm] SearchModel data)
     {
-        var searchResponse = await _searchService.Search(data.SearchString);
-        var history = Sorter.sortSearchResponses(await HistoryService.Read());
+        var SearchResponseModel = await _searchService.Search(data.SearchString);
+        var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
 
-        return View(ViewPaths.IndexView, new TemplatePayload
+        return View(ViewPaths.IndexView, new IndexTemplatePayload
         {
             searchHistory = history,
-            searchResponse = searchResponse
+            searchResponse = SearchResponseModel
         });
     }
 }
