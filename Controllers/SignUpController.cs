@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenAIApp.Config;
+using OpenAIApp.Modules.SignUp;
+
 namespace OpenAIApp.Controllers;
 
 [Route("/sign-up")]
@@ -12,7 +14,7 @@ public class SignUpController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post()
+    public IActionResult Post([FromForm] SignUpBody signUpBody)
     {
         return View(ViewPaths.SignUpView);
     }

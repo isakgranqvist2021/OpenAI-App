@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenAIApp.Config;
 using OpenAIApp.Modules.Search;
+using OpenAIApp.Modules.History;
 
 namespace OpenAIApp.Controllers;
 
 public class IndexTemplatePayload
 {
-    public List<SearchResponseModel>? SearchHistory { get; set; } = null;
-    public SearchResponseModel? SearchResponse { get; set; } = null;
+    public List<HistoryModel>? SearchHistory { get; set; } = null;
+    public HistoryModel? SearchResponse { get; set; } = null;
 }
 
 [Route("/")]
@@ -32,13 +33,13 @@ public class IndexController : Controller
     {
         try
         {
-            var SearchResponseModel = await _searchService.Search(data.SearchString);
+            var HistoryModel = await _searchService.Search(data.SearchString);
             var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
 
             return View(ViewPaths.IndexView, new IndexTemplatePayload
             {
                 SearchHistory = history,
-                SearchResponse = SearchResponseModel
+                SearchResponse = HistoryModel
             });
         }
         catch (Exception e)

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OpenAIApp.Modules.SignIn;
 
-public class SignIn
+public class SignInBody
 {
     [Required, Range(1, 99)]
     [DataType(DataType.EmailAddress)]

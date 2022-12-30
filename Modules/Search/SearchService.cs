@@ -1,8 +1,6 @@
-using MongoDB.Bson;
-using MongoDB.Driver;
-using OpenAIApp.Modules.Database;
 using System.Text;
 using System.Text.Json;
+using OpenAIApp.Modules.History;
 
 namespace OpenAIApp.Modules.Search;
 
@@ -19,7 +17,7 @@ public class SearchService
         _client.DefaultRequestHeaders.Add("Authorization", bearerTokenHeader);
     }
 
-    public async Task<SearchResponseModel?> Search(string searchString)
+    public async Task<HistoryModel?> Search(string searchString)
     {
         try
         {
@@ -50,7 +48,7 @@ public class SearchService
                 throw new Exception("Response body is null");
             }
 
-            var searchResponse = JsonSerializer.Deserialize<SearchResponseModel>(responseBody);
+            var searchResponse = JsonSerializer.Deserialize<HistoryModel>(responseBody);
 
             if (searchResponse is null)
             {
@@ -71,81 +69,3 @@ public class SearchService
     }
 }
 
-public class HistoryService
-{
-    public static async Task<List<SearchResponseModel>?> Read()
-    {
-        try
-        {
-            var collection = Collections.GetCollection<SearchResponseModel>(
-                Config.Collections.HistoryCollectionName
-            );
-
-            if (collection is null)
-            {
-                throw new Exception("Collection is null");
-            }
-
-            var history = await collection.FindAsync(new BsonDocument { });
-
-            return history.ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
-    }
-
-    public static async Task Insert(SearchResponseModel searchResponseModel)
-    {
-        try
-        {
-            var collection = Collections.GetCollection<BsonDocument>(
-                Config.Collections.HistoryCollectionName
-            );
-
-            if (collection is null)
-            {
-                throw new Exception("Collection is null");
-            }
-
-            var bson = searchResponseModel.ToBsonDocument();
-            await collection.InsertOneAsync(bson);
-            return;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return;
-        }
-    }
-}
-
-public class Sorter
-{
-    public static List<SearchResponseModel>? sortSearchResponseModels(List<SearchResponseModel>? searchResponseModels)
-    {
-        if (searchResponseModels is null)
-        {
-            return null;
-        }
-
-        if (searchResponseModels.Count() is 0)
-        {
-            return null;
-        }
-
-        searchResponseModels.Sort(delegate (SearchResponseModel x, SearchResponseModel y)
-        {
-            if (y.Created > x.Created)
-            {
-                return 1;
-            }
-
-            return -1;
-        });
-
-        return searchResponseModels;
-    }
-}
