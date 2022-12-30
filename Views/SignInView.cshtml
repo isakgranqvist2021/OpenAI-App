@@ -5,25 +5,37 @@
     Layout = "~/Views/Layout.cshtml";
 }
 
-<section class="flex flex-col border-b h-screen w-screen">
+<section class="flex flex-col h-screen w-screen">
     <nav class="px-5 py-3 bg-slate-800">
         <partial name="~/Views/Partials/Nav.cshtml" />
     </nav>
 
-    <section class="bg-slate-50 overflow-hidden grow p-5 flex flex-col gap-2">
-        <h1 class="text-xl">Sign In</h1>
+    <section class="bg-slate-50 overflow-hidden grow flex">
+        <div class="w-full items-center justify-center flex-col flex">
+            <div class="w-full">
+                <div class="w-2/5 mx-auto flex flex-col gap-4">
+                    <a href="/sign-up" class="hover:underline text-slate-800">Click here to sign up</a>
+                    <h1 class="text-xl text-3xl">Sign In</h1>
 
-        <form action="/sign-in" method="POST" class="flex items-start flex-col gap-2">
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="Email" class="border">
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="Password" class="border">
-            </div>
+                    <form action="/sign-in" method="POST" class="w-full flex items-start flex-col gap-2">
+                        <div class="flex flex-col gap-1 w-full">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="Email" class="border p-1 rounded-md">
+                        </div>
+                        <div class="flex flex-col gap-1 w-full">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="Password" class="border p-1 rounded-md">
+                        </div>
 
-            <button class="border bg-slate-800 text-white px-2 py-1 rounded-md">Sign In</button>
-        </form>
+                        <button class="ml-auto mt-1 border bg-slate-800 text-white px-3 py-2 rounded-md">
+                            Sign In
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="w-full">
+            <partial name="~/Views/Partials/SignInImage.cshtml" />
+        </div>
     </section>
 </section>
