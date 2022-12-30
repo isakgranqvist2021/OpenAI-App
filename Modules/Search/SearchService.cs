@@ -60,7 +60,7 @@ public class SearchService : SearchInterface
 
             searchResponse.SearchString = searchString;
 
-            await _historyService.Insert(searchResponse);
+            await _historyService.InsertOne(searchResponse);
 
             return searchResponse;
         }

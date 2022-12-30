@@ -2,18 +2,27 @@ using MongoDB.Driver;
 
 namespace OpenAIApp.Modules.Database;
 
-public class Collections : DatabaseInterface
+public class DatabaseService : DatabaseInterface
 {
+
+    private IMongoDatabase _database;
+
+    public DatabaseService()
+    {
+        var client = new MongoClient(
+            System.Environment.GetEnvironmentVariable("MONGODB_URI")
+        );
+
+        _database = client.GetDatabase(
+            System.Environment.GetEnvironmentVariable("DB_NAME")
+        );
+    }
+
     public IMongoCollection<T>? GetCollection<T>(string collectionName)
     {
         try
         {
-            var client = new MongoClient(
-                System.Environment.GetEnvironmentVariable("MONGODB_URI")
-            );
-
-            var database = client.GetDatabase("OpenAIApp");
-            return database.GetCollection<T>(collectionName);
+            return _database.GetCollection<T>(collectionName);
         }
         catch (Exception e)
         {

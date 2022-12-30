@@ -6,20 +6,19 @@ namespace OpenAIApp.Modules.History;
 
 public class HistoryService : HistoryInterface
 {
-
-    private Collections _collections;
+    private DatabaseService _databaseService;
 
     public HistoryService()
     {
-        _collections = new Collections();
+        _databaseService = new DatabaseService();
     }
 
     public async Task<List<HistoryModel>?> Read()
     {
         try
         {
-            var collection = _collections.GetCollection<HistoryModel>(
-                Config.Collections.HistoryCollectionName
+            var collection = _databaseService.GetCollection<HistoryModel>(
+                DatabaseCollections.HistoryCollectionName
             );
 
             if (collection is null)
@@ -38,12 +37,12 @@ public class HistoryService : HistoryInterface
         }
     }
 
-    public async Task Insert(HistoryModel searchResponseModel)
+    public async Task InsertOne(HistoryModel searchResponseModel)
     {
         try
         {
-            var collection = _collections.GetCollection<BsonDocument>(
-                Config.Collections.HistoryCollectionName
+            var collection = _databaseService.GetCollection<BsonDocument>(
+                DatabaseCollections.HistoryCollectionName
             );
 
             if (collection is null)
@@ -51,8 +50,7 @@ public class HistoryService : HistoryInterface
                 throw new Exception("Collection is null");
             }
 
-            var bson = searchResponseModel.ToBsonDocument();
-            await collection.InsertOneAsync(bson);
+            await collection.InsertOneAsync(searchResponseModel.ToBsonDocument());
             return;
         }
         catch (Exception e)
