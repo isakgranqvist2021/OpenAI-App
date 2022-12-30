@@ -6,28 +6,31 @@
 }
 
 <section class="flex flex-col h-screen w-screen">
-    <nav class="px-5 py-3 bg-slate-800">
+    <nav class="px-5 py-3 bg-slate-800 border-b border-slate-700">
         <partial name="~/Views/Partials/Nav.cshtml" />
     </nav>
 
     <section class="bg-slate-50 overflow-hidden grow flex">
-        <div class="w-full items-center justify-center flex-col flex">
+        <div class="w-3/4 items-center justify-center flex-col flex">
             <div class="w-full">
                 <div class="w-2/5 mx-auto flex flex-col gap-4">
-                    <a href="/sign-in" class="hover:underline text-slate-800">Click here to sign in</a>
+                    <a tabindex="4" href="/sign-in" class="hover:underline text-slate-800">Click here to sign in</a>
                     <h1 class="text-xl text-3xl">Sign Up</h1>
 
                     <form action="/sign-up" method="POST" class="w-full flex items-start flex-col gap-2">
                         <div class="flex flex-col gap-1 w-full">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="Email" class="border p-1 rounded-md">
+                            <input tabindex="1" autofocus type="email" id="email" name="Email"
+                                class="border p-1 rounded-md">
                         </div>
                         <div class="flex flex-col gap-1 w-full">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="Password" class="border p-1 rounded-md">
+                            <input tabindex="2" type="password" id="password" name="Password"
+                                class="border p-1 rounded-md">
                         </div>
 
-                        <button class="ml-auto mt-1 border bg-slate-800 text-white px-3 py-2 rounded-md">
+                        <button tabindex="3"
+                            class="ml-auto mt-1 border bg-slate-800 text-white px-3 py-2 rounded-md focus:bg-slate-600">
                             Sign Up
                         </button>
                     </form>

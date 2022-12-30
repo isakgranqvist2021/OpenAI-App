@@ -55,6 +55,12 @@ public class HistoryModel
     [JsonIgnore]
     public ObjectId? Id { get; set; }
 
+    [BsonElement("userId")]
+    [BsonRepresentation(BsonType.ObjectId)]
+    [BsonRequired]
+    [JsonIgnore]
+    public ObjectId? UserId { get; set; }
+
     [BsonElement("searchString")]
     [BsonRequired]
     [JsonPropertyName("searchString")]

@@ -13,7 +13,7 @@ public class HistoryService : HistoryInterface
         _databaseService = new DatabaseService();
     }
 
-    public async Task<List<HistoryModel>?> Read()
+    public async Task<List<HistoryModel>?> Read(ObjectId userId)
     {
         try
         {
@@ -26,7 +26,8 @@ public class HistoryService : HistoryInterface
                 throw new Exception("Collection is null");
             }
 
-            var history = await collection.FindAsync(new BsonDocument { });
+            var history = await collection.FindAsync(new BsonDocument
+            { ["userId"] = userId });
 
             return history.ToList();
         }

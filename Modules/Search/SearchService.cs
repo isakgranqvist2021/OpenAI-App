@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using OpenAIApp.Modules.History;
+using MongoDB.Bson;
 
 namespace OpenAIApp.Modules.Search;
 
@@ -20,7 +21,7 @@ public class SearchService : SearchInterface
         _client.DefaultRequestHeaders.Add("Authorization", bearerTokenHeader);
     }
 
-    public async Task<HistoryModel?> Search(string searchString)
+    public async Task<HistoryModel?> Search(string searchString, ObjectId userId)
     {
         try
         {
@@ -59,7 +60,7 @@ public class SearchService : SearchInterface
             }
 
             searchResponse.SearchString = searchString;
-
+            searchResponse.UserId = userId;
             await _historyService.InsertOne(searchResponse);
 
             return searchResponse;

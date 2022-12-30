@@ -24,10 +24,9 @@ public class UserService
                 throw new Exception("Collection is null");
             }
 
-            var filter = new BsonDocument { };
-            filter["email"] = Email;
 
-            return (await collection.FindAsync(filter)).First();
+            return (await collection.FindAsync(new BsonDocument
+            { ["email"] = Email })).First();
         }
         catch (Exception e)
         {

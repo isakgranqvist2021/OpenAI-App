@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenAIApp.Config;
 using OpenAIApp.Modules.Search;
 using OpenAIApp.Modules.History;
+using MongoDB.Bson;
 
 namespace OpenAIApp.Controllers;
 
@@ -26,13 +27,14 @@ public class IndexController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var history = Sorter.sortSearchResponseModels(await _historyService.Read());
         var id = HttpContext.Session.GetString("Session");
 
         if (id is null)
         {
             return Redirect("/sign-in");
         }
+
+        var history = Sorter.sortSearchResponseModels(await _historyService.Read(ObjectId.Parse(id)));
 
         return View(ViewPaths.IndexView, new IndexTemplatePayload
         {
@@ -44,16 +46,23 @@ public class IndexController : Controller
     [HttpPost]
     public async Task<ActionResult> Post([FromForm] SearchBody data)
     {
-
         try
         {
+            var id = HttpContext.Session.GetString("Session");
+
+            if (id is null)
+            {
+                throw new Exception("User is null");
+            }
+
             if (!ModelState.IsValid)
             {
                 throw new Exception("Model state invalid");
             }
 
-            var HistoryModel = await _searchService.Search(data.SearchString);
-            var history = Sorter.sortSearchResponseModels(await _historyService.Read());
+            var userId = ObjectId.Parse(id);
+            var HistoryModel = await _searchService.Search(data.SearchString, userId);
+            var history = Sorter.sortSearchResponseModels(await _historyService.Read(userId));
 
             return View(ViewPaths.IndexView, new IndexTemplatePayload
             {
