@@ -38,8 +38,14 @@ public class IndexController : Controller
     [HttpPost]
     public async Task<ActionResult> Post([FromForm] SearchBody data)
     {
+
         try
         {
+            if (!ModelState.IsValid)
+            {
+                throw new Exception("Model state invalid");
+            }
+
             var HistoryModel = await _searchService.Search(data.SearchString);
             var history = Sorter.sortSearchResponseModels(await _historyService.Read());
 

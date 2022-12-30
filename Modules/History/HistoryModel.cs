@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
@@ -5,41 +6,41 @@ namespace OpenAIApp.Modules.History;
 
 public class ChoiceModel
 {
-    [BsonRequired]
     [BsonElement("text")]
+    [BsonRequired]
     [JsonPropertyName("text")]
     public string Text { get; set; } = "";
 
-    [BsonRequired]
     [BsonElement("index")]
+    [BsonRequired]
     [JsonPropertyName("index")]
     public int Index { get; set; } = 0;
 
-    [BsonRequired]
     [BsonElement("logprobs")]
+    [BsonRequired]
     [JsonPropertyName("logprobs")]
     public string? LogProbs { get; set; } = null;
 
-    [BsonRequired]
     [BsonElement("finish_reason")]
+    [BsonRequired]
     [JsonPropertyName("finish_reason")]
     public string FinishReason { get; set; } = "length";
 }
 
 public class UsageModel
 {
-    [BsonRequired]
     [BsonElement("prompt_tokens")]
+    [BsonRequired]
     [JsonPropertyName("prompt_tokens")]
     public int PromptTokens { get; set; } = 0;
 
-    [BsonRequired]
     [BsonElement("completion_tokens")]
+    [BsonRequired]
     [JsonPropertyName("completion_tokens")]
     public int CompletionTokens { get; set; } = 0;
 
-    [BsonRequired]
     [BsonElement("total_tokens")]
+    [BsonRequired]
     [JsonPropertyName("total_tokens")]
     public int TotalTokens { get; set; } = 0;
 }
@@ -47,39 +48,40 @@ public class UsageModel
 
 public class HistoryModel
 {
+    [BsonElement("_id")]
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
     [BsonRequired]
-    [BsonIdAttribute]
-    [BsonElement("id")]
-    [JsonPropertyName("id")]
-    public string Id { get; set; } = "";
+    [JsonIgnore]
+    public ObjectId? Id { get; set; }
 
-    [BsonRequired]
     [BsonElement("searchString")]
+    [BsonRequired]
     [JsonPropertyName("searchString")]
     public string SearchString { get; set; } = "";
 
-    [BsonRequired]
     [BsonElement("obj")]
+    [BsonRequired]
     [JsonPropertyName("obj")]
     public string Obj { get; set; } = "";
 
-    [BsonRequired]
     [BsonElement("created")]
+    [BsonRequired]
     [JsonPropertyName("created")]
     public long Created { get; set; } = 0;
 
-    [BsonRequired]
     [BsonElement("model")]
+    [BsonRequired]
     [JsonPropertyName("model")]
     public string Model { get; } = "text-davinci:003";
 
-    [BsonRequired]
     [BsonElement("choices")]
+    [BsonRequired]
     [JsonPropertyName("choices")]
     public List<ChoiceModel> Choices { get; set; } = new List<ChoiceModel>();
 
-    [BsonRequired]
     [BsonElement("usage")]
+    [BsonRequired]
     [JsonPropertyName("usages")]
     public UsageModel? Usage { get; set; } = null;
 }

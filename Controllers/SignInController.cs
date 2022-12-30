@@ -7,6 +7,15 @@ namespace OpenAIApp.Controllers;
 [Route("/sign-in")]
 public class SignInController : Controller
 {
+
+    SignInService _signInService;
+
+    public SignInController()
+    {
+        _signInService = new SignInService();
+    }
+
+
     [HttpGet]
     public IActionResult Get()
     {
@@ -14,8 +23,28 @@ public class SignInController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post([FromForm] SignInBody signInBody)
+    public async Task<IActionResult> Post([FromForm] SignInBody signInBody)
     {
-        return View(ViewPaths.SignInView);
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new Exception("Invalid model state");
+            }
+
+            var user = await _signInService.SignIn(signInBody);
+
+            if (user is null)
+            {
+                throw new Exception("Invalid password");
+            }
+
+            return View(ViewPaths.SignInView);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return Redirect("/sign-in");
+        }
     }
 }

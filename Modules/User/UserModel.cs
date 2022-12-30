@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +7,10 @@ namespace OpenAIApp.Modules.User;
 public class UserModel
 {
     [BsonId]
-    public string Id { get; set; } = "";
+    [BsonRequired]
+    [BsonElement("_id")]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public ObjectId? Id { get; set; }
 
     [BsonRequired]
     [BsonElement("email")]

@@ -37,10 +37,12 @@ public class HistoryService : HistoryInterface
         }
     }
 
-    public async Task InsertOne(HistoryModel searchResponseModel)
+    public async Task<ObjectId?> InsertOne(HistoryModel searchResponseModel)
     {
         try
         {
+            searchResponseModel.Id = ObjectId.GenerateNewId();
+
             var collection = _databaseService.GetCollection<BsonDocument>(
                 DatabaseCollections.HistoryCollectionName
             );
@@ -51,12 +53,12 @@ public class HistoryService : HistoryInterface
             }
 
             await collection.InsertOneAsync(searchResponseModel.ToBsonDocument());
-            return;
+            return searchResponseModel.Id;
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return;
+            return null;
         }
     }
 }

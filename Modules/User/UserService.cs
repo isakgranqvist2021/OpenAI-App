@@ -1,3 +1,5 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
 using OpenAIApp.Modules.Database;
 
 namespace OpenAIApp.Modules.User;
@@ -13,11 +15,46 @@ public class UserService
 
     public async Task<UserModel?> ReadOneByEmail(string Email)
     {
-        return null;
+        try
+        {
+            var collection = _databaseService.GetCollection<UserModel>(DatabaseCollections.UsersCollectionName);
+
+            if (collection is null)
+            {
+                throw new Exception("Collection is null");
+            }
+
+            var filter = new BsonDocument { };
+            filter["email"] = Email;
+
+            return (await collection.FindAsync(filter)).First();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
     }
 
-    public async Task<string?> InsertOne(UserModel userModel)
+    public async Task<ObjectId?> InsertOne(UserModel userModel)
     {
-        return null;
+        try
+        {
+            var collection = _databaseService.GetCollection<UserModel>(DatabaseCollections.UsersCollectionName);
+
+            if (collection is null)
+            {
+                throw new Exception("Collection is null");
+            }
+
+            await collection.InsertOneAsync(userModel);
+
+            return userModel.Id;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
     }
 }
