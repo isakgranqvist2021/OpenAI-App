@@ -10,6 +10,15 @@ public class Program
 
         builder.Services.AddControllersWithViews();
 
+        builder.Services.AddDistributedMemoryCache();
+
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromDays(1);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         var app = builder.Build();
 
         if (!app.Environment.IsDevelopment())
@@ -22,7 +31,7 @@ public class Program
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
-
+        app.UseSession();
         app.MapControllers();
 
         app.Run();

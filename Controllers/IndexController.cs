@@ -27,6 +27,12 @@ public class IndexController : Controller
     public async Task<IActionResult> Get()
     {
         var history = Sorter.sortSearchResponseModels(await _historyService.Read());
+        var id = HttpContext.Session.GetString("Session");
+
+        if (id is null)
+        {
+            return Redirect("/sign-in");
+        }
 
         return View(ViewPaths.IndexView, new IndexTemplatePayload
         {

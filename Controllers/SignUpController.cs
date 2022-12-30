@@ -18,6 +18,13 @@ public class SignUpController : Controller
     [HttpGet]
     public IActionResult Get()
     {
+        var id = HttpContext.Session.GetString("Session");
+
+        if (id is not null)
+        {
+            return Redirect("/");
+        }
+
         return View(ViewPaths.SignUpView);
     }
 
@@ -31,8 +38,15 @@ public class SignUpController : Controller
                 throw new Exception("Model state invalid");
             }
 
-            await _signUpService.SignUp(signUpBody);
-            return View(ViewPaths.SignUpView);
+            var id = await _signUpService.SignUp(signUpBody);
+
+            if (id is null)
+            {
+                return Redirect("/sign-up");
+            }
+
+            HttpContext.Session.SetString("Session", id.ToString()!);
+            return Redirect("/");
         }
         catch (Exception e)
         {

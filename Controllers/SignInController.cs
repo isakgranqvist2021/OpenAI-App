@@ -19,6 +19,13 @@ public class SignInController : Controller
     [HttpGet]
     public IActionResult Get()
     {
+        var id = HttpContext.Session.GetString("Session");
+
+        if (id is not null)
+        {
+            return Redirect("/");
+        }
+
         return View(ViewPaths.SignInView);
     }
 
@@ -39,7 +46,8 @@ public class SignInController : Controller
                 throw new Exception("Invalid password");
             }
 
-            return View(ViewPaths.SignInView);
+            HttpContext.Session.SetString("Session", user.Id.ToString()!);
+            return Redirect("/");
         }
         catch (Exception e)
         {
