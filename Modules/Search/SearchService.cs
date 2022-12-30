@@ -4,13 +4,16 @@ using OpenAIApp.Modules.History;
 
 namespace OpenAIApp.Modules.Search;
 
-public class SearchService
+public class SearchService : SearchInterface
 {
-    private static HttpClient? _client;
+    private HttpClient? _client;
+    private HistoryService _historyService;
+
     private const string baseUrl = "https://api.openai.com/v1/completions";
     public SearchService()
     {
         _client = new HttpClient();
+        _historyService = new HistoryService();
 
         var openApiSecret = System.Environment.GetEnvironmentVariable("OPEN_API_SECRET");
         var bearerTokenHeader = String.Format("Bearer {0}", openApiSecret);
@@ -57,7 +60,7 @@ public class SearchService
 
             searchResponse.SearchString = searchString;
 
-            await HistoryService.Insert(searchResponse);
+            await _historyService.Insert(searchResponse);
 
             return searchResponse;
         }

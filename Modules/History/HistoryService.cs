@@ -4,13 +4,21 @@ using OpenAIApp.Modules.Database;
 
 namespace OpenAIApp.Modules.History;
 
-public class HistoryService
+public class HistoryService : HistoryInterface
 {
-    public static async Task<List<HistoryModel>?> Read()
+
+    private Collections _collections;
+
+    public HistoryService()
+    {
+        _collections = new Collections();
+    }
+
+    public async Task<List<HistoryModel>?> Read()
     {
         try
         {
-            var collection = Collections.GetCollection<HistoryModel>(
+            var collection = _collections.GetCollection<HistoryModel>(
                 Config.Collections.HistoryCollectionName
             );
 
@@ -30,11 +38,11 @@ public class HistoryService
         }
     }
 
-    public static async Task Insert(HistoryModel searchResponseModel)
+    public async Task Insert(HistoryModel searchResponseModel)
     {
         try
         {
-            var collection = Collections.GetCollection<BsonDocument>(
+            var collection = _collections.GetCollection<BsonDocument>(
                 Config.Collections.HistoryCollectionName
             );
 

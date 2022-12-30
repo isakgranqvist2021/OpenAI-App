@@ -14,12 +14,19 @@ public class IndexTemplatePayload
 [Route("/")]
 public class IndexController : Controller
 {
-    private readonly SearchService _searchService = new SearchService();
+    private SearchService _searchService;
+    private HistoryService _historyService;
+
+    public IndexController()
+    {
+        _searchService = new SearchService();
+        _historyService = new HistoryService();
+    }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
+        var history = Sorter.sortSearchResponseModels(await _historyService.Read());
 
         return View(ViewPaths.IndexView, new IndexTemplatePayload
         {
@@ -34,7 +41,7 @@ public class IndexController : Controller
         try
         {
             var HistoryModel = await _searchService.Search(data.SearchString);
-            var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
+            var history = Sorter.sortSearchResponseModels(await _historyService.Read());
 
             return View(ViewPaths.IndexView, new IndexTemplatePayload
             {

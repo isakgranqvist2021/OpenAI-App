@@ -2,9 +2,9 @@ using MongoDB.Driver;
 
 namespace OpenAIApp.Modules.Database;
 
-public class Collections
+public class Collections : DatabaseInterface
 {
-    public static IMongoCollection<T>? GetCollection<T>(string collectionName)
+    public IMongoCollection<T>? GetCollection<T>(string collectionName)
     {
         try
         {
