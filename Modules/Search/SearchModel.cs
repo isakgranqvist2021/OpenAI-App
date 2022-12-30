@@ -1,40 +1,108 @@
+using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace OpenAIApp.Modules.Search;
 
-public class SearchModel
+
+public class SearchBody
 {
     public string SearchString { get; set; } = "";
 }
 
-public class SearchPayloadModel
+public class SearchPayload
 {
-    public string model { get; set; } = "";
-    public string prompt { get; set; } = "";
-    public float temperature { get; set; } = 0;
-    public int max_tokens { get; set; } = 7;
+
+    [JsonPropertyName("model")]
+    public string Model { get; set; } = "";
+
+    [JsonPropertyName("prompt")]
+    public string Prompt { get; set; } = "";
+
+    [JsonPropertyName("temperature")]
+    public float Temperature { get; set; } = 0;
+
+    [JsonPropertyName("max_tokens")]
+    public int MaxTokens { get; set; } = 7;
 }
+
 
 public class SearchResponseChoiceModel
 {
-    public string text { get; set; } = "";
-    public int index { get; set; } = 0;
-    public string? logprobs { get; set; } = null;
-    public string finish_reason { get; set; } = "length";
+    [BsonRequired]
+    [BsonElement("text")]
+    [JsonPropertyName("text")]
+    public string Text { get; set; } = "";
+
+    [BsonRequired]
+    [BsonElement("index")]
+    [JsonPropertyName("index")]
+    public int Index { get; set; } = 0;
+
+    [BsonRequired]
+    [BsonElement("logprobs")]
+    [JsonPropertyName("logprobs")]
+    public string? LogProbs { get; set; } = null;
+
+    [BsonRequired]
+    [BsonElement("finish_reason")]
+    [JsonPropertyName("finish_reason")]
+    public string FinishReason { get; set; } = "length";
 }
 
 public class UsageModel
 {
-    public int prompt_tokens { get; set; } = 0;
-    public int completion_tokens { get; set; } = 0;
-    public int total_tokens { get; set; } = 0;
+    [BsonRequired]
+    [BsonElement("prompt_tokens")]
+    [JsonPropertyName("prompt_tokens")]
+    public int PromptTokens { get; set; } = 0;
+
+    [BsonRequired]
+    [BsonElement("completion_tokens")]
+    [JsonPropertyName("completion_tokens")]
+    public int CompletionTokens { get; set; } = 0;
+
+    [BsonRequired]
+    [BsonElement("total_tokens")]
+    [JsonPropertyName("total_tokens")]
+    public int TotalTokens { get; set; } = 0;
 }
 
 
 public class SearchResponseModel
 {
-    public string id { get; set; } = "";
-    public string obj { get; set; } = "";
-    public long created { get; set; } = 0;
-    public string model { get; } = "text-davinci:003";
-    public List<SearchResponseChoiceModel> choices { get; set; } = new List<SearchResponseChoiceModel>();
-    public UsageModel? usage { get; set; } = null;
+    [BsonRequired]
+    [BsonIdAttribute]
+    [BsonElement("id")]
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = "";
+
+    [BsonRequired]
+    [BsonElement("searchString")]
+    [JsonPropertyName("searchString")]
+    public string SearchString { get; set; } = "";
+
+    [BsonRequired]
+    [BsonElement("obj")]
+    [JsonPropertyName("obj")]
+    public string Obj { get; set; } = "";
+
+    [BsonRequired]
+    [BsonElement("created")]
+    [JsonPropertyName("created")]
+    public long Created { get; set; } = 0;
+
+    [BsonRequired]
+    [BsonElement("model")]
+    [JsonPropertyName("model")]
+    public string Model { get; } = "text-davinci:003";
+
+    [BsonRequired]
+    [BsonElement("choices")]
+    [JsonPropertyName("choices")]
+    public List<SearchResponseChoiceModel> Choices { get; set; } = new List<SearchResponseChoiceModel>();
+
+    [BsonRequired]
+    [BsonElement("usage")]
+    [JsonPropertyName("usages")]
+    public UsageModel? Usage { get; set; } = null;
 }

@@ -1,14 +1,14 @@
-<div>
-    @if (Model?.searchHistory is not null)
+<div class="h-full">
+    @if (Model?.SearchHistory is not null)
     {
-        @foreach (var item in Model.searchHistory)
+        @foreach (var item in Model.SearchHistory)
         {
             <div class="px-5 py-2 border-b last:border-b-0">
-                <span class="text-slate-500 text-sm timestamp">@item.created</span>
+                <span class="text-slate-500 text-sm timestamp">@item.Created</span>
 
-                @foreach (var choice in item.choices)
+                @foreach (var choice in item.Choices)
                 {
-                    <p class="text-xs">@choice.text</p>
+                    <p class="text-xs">@choice.Text</p>
                 }
             </div>
         }

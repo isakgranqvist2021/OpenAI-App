@@ -1,10 +1,10 @@
 <div class="flex flex-col overflow-auto grow">
-    @if (Model?.searchResponse?.choices is not null)
+    @if (Model?.SearchResponse?.Choices is not null)
     {
-        @foreach (var item in Model.searchResponse.choices)
+        @foreach (var item in Model.SearchResponse.Choices)
         {
             <div class="p-5 border-b last:border-b-0">
-                <p class="max-w-prose">@item.text</p>
+                <p class="max-w-prose">@item.Text</p>
             </div>
         }
     }

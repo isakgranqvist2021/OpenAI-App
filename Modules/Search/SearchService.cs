@@ -28,12 +28,12 @@ public class SearchService
                 throw new Exception("Http Client is null");
             }
 
-            var payload = new SearchPayloadModel
+            var payload = new SearchPayload
             {
-                model = "text-davinci-003",
-                prompt = searchString,
-                temperature = .5f,
-                max_tokens = 100,
+                Model = "text-davinci-003",
+                Prompt = searchString,
+                Temperature = .5f,
+                MaxTokens = 100,
             };
 
             var content = new StringContent(
@@ -50,15 +50,18 @@ public class SearchService
                 throw new Exception("Response body is null");
             }
 
-            var SearchResponseModel = JsonSerializer.Deserialize<SearchResponseModel>(responseBody);
+            var searchResponse = JsonSerializer.Deserialize<SearchResponseModel>(responseBody);
 
-            if (SearchResponseModel is null)
+            if (searchResponse is null)
             {
                 throw new Exception("Could not deserialize search response");
             }
 
-            await HistoryService.Insert(SearchResponseModel);
-            return SearchResponseModel;
+            searchResponse.SearchString = searchString;
+
+            await HistoryService.Insert(searchResponse);
+
+            return searchResponse;
         }
         catch (HttpRequestException e)
         {
@@ -83,8 +86,9 @@ public class HistoryService
                 throw new Exception("Collection is null");
             }
 
-            var SearchResponseModels = await collection.FindAsync(new BsonDocument { });
-            return SearchResponseModels.ToList();
+            var history = await collection.FindAsync(new BsonDocument { });
+
+            return history.ToList();
         }
         catch (Exception e)
         {
@@ -93,11 +97,11 @@ public class HistoryService
         }
     }
 
-    public static async Task Insert(SearchResponseModel SearchResponseModel)
+    public static async Task Insert(SearchResponseModel searchResponseModel)
     {
         try
         {
-            var collection = Collections.GetCollection<SearchResponseModel>(
+            var collection = Collections.GetCollection<BsonDocument>(
                 Config.Collections.HistoryCollectionName
             );
 
@@ -106,7 +110,8 @@ public class HistoryService
                 throw new Exception("Collection is null");
             }
 
-            await collection.InsertOneAsync(SearchResponseModel);
+            var bson = searchResponseModel.ToBsonDocument();
+            await collection.InsertOneAsync(bson);
             return;
         }
         catch (Exception e)
@@ -119,21 +124,21 @@ public class HistoryService
 
 public class Sorter
 {
-    public static List<SearchResponseModel>? sortSearchResponseModels(List<SearchResponseModel>? SearchResponseModels)
+    public static List<SearchResponseModel>? sortSearchResponseModels(List<SearchResponseModel>? searchResponseModels)
     {
-        if (SearchResponseModels is null)
+        if (searchResponseModels is null)
         {
             return null;
         }
 
-        if (SearchResponseModels.Count() is 0)
+        if (searchResponseModels.Count() is 0)
         {
             return null;
         }
 
-        SearchResponseModels.Sort(delegate (SearchResponseModel x, SearchResponseModel y)
+        searchResponseModels.Sort(delegate (SearchResponseModel x, SearchResponseModel y)
         {
-            if (y.created > x.created)
+            if (y.Created > x.Created)
             {
                 return 1;
             }
@@ -141,6 +146,6 @@ public class Sorter
             return -1;
         });
 
-        return SearchResponseModels;
+        return searchResponseModels;
     }
 }

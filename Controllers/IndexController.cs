@@ -6,8 +6,8 @@ namespace OpenAIApp.Controllers;
 
 public class IndexTemplatePayload
 {
-    public List<SearchResponseModel>? searchHistory { get; set; } = null;
-    public SearchResponseModel? searchResponse { get; set; } = null;
+    public List<SearchResponseModel>? SearchHistory { get; set; } = null;
+    public SearchResponseModel? SearchResponse { get; set; } = null;
 }
 
 [Route("/")]
@@ -22,21 +22,29 @@ public class IndexController : Controller
 
         return View(ViewPaths.IndexView, new IndexTemplatePayload
         {
-            searchHistory = history,
-            searchResponse = null
+            SearchHistory = history,
+            SearchResponse = null
         });
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromForm] SearchModel data)
+    public async Task<ActionResult> Post([FromForm] SearchBody data)
     {
-        var SearchResponseModel = await _searchService.Search(data.SearchString);
-        var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
-
-        return View(ViewPaths.IndexView, new IndexTemplatePayload
+        try
         {
-            searchHistory = history,
-            searchResponse = SearchResponseModel
-        });
+            var SearchResponseModel = await _searchService.Search(data.SearchString);
+            var history = Sorter.sortSearchResponseModels(await HistoryService.Read());
+
+            return View(ViewPaths.IndexView, new IndexTemplatePayload
+            {
+                SearchHistory = history,
+                SearchResponse = SearchResponseModel
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return Redirect("/");
+        }
     }
 }
